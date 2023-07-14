@@ -58,7 +58,7 @@ function changeModule(module){
 			$("#module_quiz").addClass("invisible");
 			$("#module_questions").addClass("invisible");
 			break;
-		case 20:
+		case 12:
 			if(checkTotal()){
 				$('#currentframe').attr('src', 'quiz/final-exam.html');
 				iframe_desc_header = "";
