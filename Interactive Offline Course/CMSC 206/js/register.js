@@ -28,7 +28,7 @@ $(".btn-block").click(function(event){
 
 	module_quiz = {};
 	module_questions = {};
-	for (var i = 1; i <= 11 ; i++) {
+	for (var i = 1; i <= 1 ; i++) {
 		module_quiz[i] = -1;
 		module_questions[i] = "";
 	}
