@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Topic 5 Quiz</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/quiz.css" rel="stylesheet">
+	<script type="text/javascript" src="../js/external/mootools-core-1.4.5-minified.js"></script>
+	<script type="text/javascript" src="../js/dg-quiz-maker.js"></script>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+
+<div id="quiz-header"> 
+	<h2> Topic 5 Quiz </h2>
+	<ul>
+	<li/>Note that you need to get a perfect score in all the quizzes to be able to take the final exam. 
+	<li/>Nevertheless, you can take the quizzes as many times as you want.
+	</ul>
+	<p> Good luck! :) </p>
+	<hr>
+</div>
+<div id="questions"></div>
+<div id="error"></div>
+<div id="result"></div>
+
+<script type="text/javascript">
+
+function showWrongAnswer(){
+    document.id('error').set('html', 'Wrong answer, Please try again');
+}
+
+function showScore() {
+	var score = quizMaker.getScore();
+
+	var el = new Element('h3');
+	el.set('html', 'Thank you!');
+    document.id('result').adopt(el);
+
+	el = new Element('h4');
+	el.set('html', 'Score: ' + score.numCorrectAnswers + ' of ' + score.numQuestions + ' = ' + (score.numCorrectAnswers/score.numQuestions*100) + '%');
+    document.id('result').adopt(el);
+
+    //Do not show incorrect answers
+    
+	if(score.incorrectAnswers.length > 0) {
+		el = new Element('h4');
+		el.set('html', 'Incorrect answers:');
+        document.id('result').adopt(el);
+
+		for(var i=0;i<score.incorrectAnswers.length;i++) {
+			var incorrectAnswer = score.incorrectAnswers[i];
+			el = new Element('div');
+			el.set('html', '<b>' +  incorrectAnswer.questionNumber + ': ' + incorrectAnswer.label + '</b>');
+			document.id('result').adopt(el);
+
+			el = new Element('div');
+			el.set('html', 'Correct answer : ' + incorrectAnswer.correctAnswer);
+            document.id('result').adopt(el);
+			el = new Element('div');
+			el.set('html', 'Your answer : ' + incorrectAnswer.userAnswer);
+            document.id('result').adopt(el);
+		}
+	}
+	
+}
+
+var _0x32ed41=_0x2f40;(function(_0x361c12,_0x59131a){var _0x53a23c=_0x2f40,_0x2c0d3b=_0x361c12();while(!![]){try{var _0x598f44=parseInt(_0x53a23c(0x171))/0x1*(parseInt(_0x53a23c(0x168))/0x2)+parseInt(_0x53a23c(0x169))/0x3*(parseInt(_0x53a23c(0x170))/0x4)+parseInt(_0x53a23c(0x16c))/0x5+-parseInt(_0x53a23c(0x16b))/0x6+parseInt(_0x53a23c(0x16a))/0x7*(-parseInt(_0x53a23c(0x167))/0x8)+-parseInt(_0x53a23c(0x173))/0x9+-parseInt(_0x53a23c(0x16f))/0xa;if(_0x598f44===_0x59131a)break;else _0x2c0d3b['push'](_0x2c0d3b['shift']());}catch(_0x22c337){_0x2c0d3b['push'](_0x2c0d3b['shift']());}}}(_0x34a7,0xd4b46));function _0x34a7(){var _0x5a48f7=['The\x20Division\x20relational\x20operation\x20is\x20not\x20implemented\x20in\x20the\x20SQL\x20language.','65040idCIre','2AOVsOI','3JOqLjw','896NQCZIL','6040806UuPgvi','5637910ZhUrhG','False','The\x20relational\x20algebra\x20is\x20the\x20same\x20as\x20the\x20SQL\x20query\x20language.','1751750RtBdKJ','1789852pPLHas','1737979HCOQAS','True','1972530WTRfIf'];_0x34a7=function(){return _0x5a48f7;};return _0x34a7();}function _0x2f40(_0x263acc,_0x70bea){var _0x34a73b=_0x34a7();return _0x2f40=function(_0x2f4040,_0x3a1aa6){_0x2f4040=_0x2f4040-0x167;var _0x11e1b2=_0x34a73b[_0x2f4040];return _0x11e1b2;},_0x2f40(_0x263acc,_0x70bea);}var questions=[{'label':'The\x20result\x20of\x20an\x20SQL\x20query\x20is\x20a\x20table\x20and\x20can\x20be\x20used\x20as\x20part\x20of\x20another\x20query.','options':[_0x32ed41(0x172),_0x32ed41(0x16d)],'answer':['True']},{'label':_0x32ed41(0x16e),'options':[_0x32ed41(0x172),_0x32ed41(0x16d)],'answer':[_0x32ed41(0x16d)]},{'label':_0x32ed41(0x174),'options':[_0x32ed41(0x172),_0x32ed41(0x16d)],'answer':[_0x32ed41(0x172)]}];
+
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function showAnswerAlert() {
+	document.id('error').set('html', 'You have to answer before you continue to the next question');
+}
+function clearErrorBox() {
+    document.id('error').set('html','');
+}
+
+ITEM_COUNT = 3
+random_questions = shuffle(questions).slice(0,ITEM_COUNT)
+
+var quizMaker = new DG.QuizMaker({
+	questions : shuffle(random_questions),
+	el : 'questions',
+    forceCorrectAnswer:false,
+	listeners : {
+		'finish' : showScore,
+		'missinganswer' : showAnswerAlert,
+		'sendanswer' : clearErrorBox,
+        'wrongAnswer' : showWrongAnswer
+	}
+});
+
+
+
+quizMaker.start();
+
+
+</script>
+
+</body>
+</html>

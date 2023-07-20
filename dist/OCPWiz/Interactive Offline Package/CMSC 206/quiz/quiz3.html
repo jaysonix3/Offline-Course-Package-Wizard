@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Topic 3 Quiz</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/quiz.css" rel="stylesheet">
+	<script type="text/javascript" src="../js/external/mootools-core-1.4.5-minified.js"></script>
+	<script type="text/javascript" src="../js/dg-quiz-maker.js"></script>
+	<meta charset="UTF-8">
+</head>
+
+<body>
+
+<div id="quiz-header"> 
+	<h2> Topic 3 Quiz </h2>
+	<ul>
+	<li/>Note that you need to get a perfect score in all the quizzes to be able to take the final exam. 
+	<li/>Nevertheless, you can take the quizzes as many times as you want.
+	</ul>
+	<p> Good luck! :) </p>
+	<hr>
+</div>
+<div id="questions"></div>
+<div id="error"></div>
+<div id="result"></div>
+
+<script type="text/javascript">
+
+function showWrongAnswer(){
+    document.id('error').set('html', 'Wrong answer, Please try again');
+}
+
+function showScore() {
+	var score = quizMaker.getScore();
+
+	var el = new Element('h3');
+	el.set('html', 'Thank you!');
+    document.id('result').adopt(el);
+
+	el = new Element('h4');
+	el.set('html', 'Score: ' + score.numCorrectAnswers + ' of ' + score.numQuestions + ' = ' + (score.numCorrectAnswers/score.numQuestions*100) + '%');
+    document.id('result').adopt(el);
+
+    //Do not show incorrect answers
+    
+	if(score.incorrectAnswers.length > 0) {
+		el = new Element('h4');
+		el.set('html', 'Incorrect answers:');
+        document.id('result').adopt(el);
+
+		for(var i=0;i<score.incorrectAnswers.length;i++) {
+			var incorrectAnswer = score.incorrectAnswers[i];
+			el = new Element('div');
+			el.set('html', '<b>' +  incorrectAnswer.questionNumber + ': ' + incorrectAnswer.label + '</b>');
+			document.id('result').adopt(el);
+
+			el = new Element('div');
+			el.set('html', 'Correct answer : ' + incorrectAnswer.correctAnswer);
+            document.id('result').adopt(el);
+			el = new Element('div');
+			el.set('html', 'Your answer : ' + incorrectAnswer.userAnswer);
+            document.id('result').adopt(el);
+
+		}
+	}
+	
+}
+
+function _0x3ff1(){var _0x33f926=['{Prof_id,\x20Class_id}\x20->\x20{Hours}','The\x20following\x20decomposition\x20is\x20done\x20without\x20losing\x20any\x20information\x20R(Name,\x20Address,\x20Job,\x20Age)\x20-->\x20R1(Name,\x20Address,\x20Job);\x20R2(Name,\x20Age)\x20Name\x20->\x20R1','None\x20of\x20the\x20above','All\x20of\x20the\x20above','Let\x20the\x20following\x20relation:\x20R(a1,\x20a2,\x20a3,\x20a4,\x20a5,\x20a6)\x20(primary\x20key\x20is\x20the\x20only\x20candidate\x20key)\x0awith\x20the\x20following\x20functional\x20dependencies:\x0a{a1,\x20a2,\x20a3}\x20->\x20{a1,\x20a2,\x20a3,\x20a4,\x20a5,\x20a6};\x20{a1,\x20a2}\x20->\x20{a4};\x20{a1,\x20a2,\x20a3}\x20->\x20{a4};\x20{a1,\x20a2,\x20a3}\x20->\x20{a5,\x20a6};\x20{a6}\x20->\x20{a4};\x20{a1,\x20a2,\x20a3}\x20->\x20{a5};\x20{a1,\x20a2,\x20a3}\x20->\x20{a4,\x20a6};\x20{a1,\x20a2,\x20a3}\x20->\x20{a6};\x20Which\x20among\x20the\x20following\x20normal\x20forms\x20apply\x20to\x20this\x20relational\x20schema?','False','410444vecupH','Normal\x20forms\x20make\x20the\x20DB\x20easier\x20to\x20use.','1096464ajkzpA','None\x20of\x20these','2100807UBKQjA','Normal\x20forms\x20are\x20not\x20always\x20respected\x20in\x20the\x20industry.','2\x20NF','A\x20university\x20stores\x20information\x20about\x20its\x20professors\x20and\x20classes\x20in\x20its\x20database.\x20The\x20relation\x20Prof_Class\x20stores\x20information\x20indicating\x20what\x20professor\x20teaches\x20which\x20class,\x20and\x20for\x20how\x20many\x20hours.\x20Different\x20teachers\x20can\x20teach\x20the\x20same\x20class\x20for\x20a\x20different\x20number\x20of\x20hours.\x20Which\x20of\x20the\x20following\x20functional\x20dependencies\x20exist\x20in\x20the\x20following\x20schema:\x20\x0a\x0aProf_Class(Prof_id,\x20Class_id,\x20Hours,\x20Prof_name,\x20Class_name,\x20Classroom)','Which\x20of\x20the\x20following\x20are\x20FALSE\x20about\x20normal\x20forms?','1\x20NF','624846YnDCWU','True','3\x20NF','15jVMDLW','2071380mBhukL','1632533ECNExO','BCNF','A\x20university\x20stores\x20information\x20about\x20its\x20professors\x20and\x20classes\x20in\x20its\x20database.\x20The\x20relation\x20Prof_Class\x20stores\x20information\x20indicating\x20what\x20professor\x20teaches\x20which\x20class,\x20and\x20for\x20how\x20many\x20hours.\x20Different\x20teachers\x20can\x20teach\x20the\x20same\x20class\x20for\x20a\x20different\x20number\x20of\x20hours\x20but\x20a\x20class\x20is\x20always\x20given\x20in\x20the\x20same\x20room.\x20Which\x20functional\x20dependecy\x20exist\x20in\x20the\x20following\x20schema:\x20Prof_Class(Prof_id,\x20Class_id,\x20Hours,\x20Prof_name,\x20Class_name,\x20Classroom)','5540225zrLGve','8eLZpRZ'];_0x3ff1=function(){return _0x33f926;};return _0x3ff1();}var _0x2cd7f2=_0x44a6;(function(_0x3a9d48,_0x36a9f4){var _0x19f932=_0x44a6,_0xfd67b1=_0x3a9d48();while(!![]){try{var _0x2ec60b=-parseInt(_0x19f932(0xb5))/0x1+-parseInt(_0x19f932(0xb3))/0x2*(-parseInt(_0x19f932(0xc0))/0x3)+-parseInt(_0x19f932(0xc1))/0x4+parseInt(_0x19f932(0xc5))/0x5+parseInt(_0x19f932(0xbd))/0x6+-parseInt(_0x19f932(0xc2))/0x7*(-parseInt(_0x19f932(0xc6))/0x8)+-parseInt(_0x19f932(0xb7))/0x9;if(_0x2ec60b===_0x36a9f4)break;else _0xfd67b1['push'](_0xfd67b1['shift']());}catch(_0x14d11a){_0xfd67b1['push'](_0xfd67b1['shift']());}}}(_0x3ff1,0x984a7));function _0x44a6(_0x3e85e7,_0x2478f0){var _0x3ff182=_0x3ff1();return _0x44a6=function(_0x44a6b1,_0x513545){_0x44a6b1=_0x44a6b1-0xb0;var _0x466d58=_0x3ff182[_0x44a6b1];return _0x466d58;},_0x44a6(_0x3e85e7,_0x2478f0);}var questions=[{'label':_0x2cd7f2(0xbb),'options':[_0x2cd7f2(0xb4),_0x2cd7f2(0xb8),_0x2cd7f2(0xb6),'Normal\x20forms\x20are\x20a\x20set\x20of\x20rules\x20about\x20functional\x20dependencies.'],'answer':['None\x20of\x20these']},{'label':_0x2cd7f2(0xba),'options':[_0x2cd7f2(0xc7),'{Prof_id}\x20->\x20{Prof_name}','All\x20of\x20the\x20above',_0x2cd7f2(0xc9)],'answer':[_0x2cd7f2(0xb0)]},{'label':_0x2cd7f2(0xb1),'options':[_0x2cd7f2(0xbc),_0x2cd7f2(0xb9),_0x2cd7f2(0xbf),_0x2cd7f2(0xc3)],'answer':['1\x20NF']},{'label':_0x2cd7f2(0xc4),'options':[_0x2cd7f2(0xc7),'{Prof_id}\x20->\x20{Prof_name}','{Class_id}\x20->\x20{Classroom}',_0x2cd7f2(0xb0)],'answer':[_0x2cd7f2(0xb0)]},{'label':_0x2cd7f2(0xc8),'options':[_0x2cd7f2(0xbe),_0x2cd7f2(0xb2)],'answer':[_0x2cd7f2(0xbe)]}];
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function showAnswerAlert() {
+	document.id('error').set('html', 'You have to answer before you continue to the next question');
+}
+function clearErrorBox() {
+    document.id('error').set('html','');
+}
+
+ITEM_COUNT = 5
+random_questions = shuffle(questions).slice(0,ITEM_COUNT)
+
+var quizMaker = new DG.QuizMaker({
+	questions : shuffle(random_questions),
+	el : 'questions',
+    forceCorrectAnswer:false,
+	listeners : {
+		'finish' : showScore,
+		'missinganswer' : showAnswerAlert,
+		'sendanswer' : clearErrorBox,
+        'wrongAnswer' : showWrongAnswer
+	}
+});
+
+
+
+quizMaker.start();
+
+
+</script>
+
+</body>
+</html>
