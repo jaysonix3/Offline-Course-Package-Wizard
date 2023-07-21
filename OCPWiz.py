@@ -16,14 +16,14 @@ import random
 import tkinter.font as tkfont
 import sys
 
-
-LARGEFONT = ("Verdana", 20)
 faculty = ""
 course_name = ""
 course_title = ""
-course_intro = ""
+course_intro = []
+course_guide_dir = ""
 resources = []
 topics = 0
+uploaded_pdf_dir = {}
 quiz_num_items = {}
 val = 0
 quiz_questions = {}
@@ -243,63 +243,66 @@ class CourseInfoPage(tk.Frame):
     def save_course_info(self, controller):
         global faculty, course_name, course_title
         
-        faculty = self.clicked.get()
-        course_name = self.course_name_entry.get()
-        course_title = self.course_title_entry.get()
-        if faculty == "" or course_name == "" or course_title == "":
+        temp_faculty = self.clicked.get()
+        temp_course_name = self.course_name_entry.get()
+        temp_course_title = self.course_title_entry.get()
+        if temp_faculty == "" or temp_course_name == "" or temp_course_title == "":
             msg_box=tk.messagebox.showerror('Error', 'Error: Missing fields')
         else:
-            soup_new = createNewSoup(os.path.join(os.path.dirname(__file__), 'Interactive Offline Course/CMSC 206/introduction.html'))
+            faculty = temp_faculty
+            course_name = temp_course_name
+            course_title = temp_course_title
+            # soup_new = createNewSoup(os.path.join(os.path.dirname(__file__), 'Interactive Offline Course/CMSC 206/introduction.html'))
             
-            first_link = soup_new.h2
-            first_link.string = course_name + ' - ' + course_title
+            # first_link = soup_new.h2
+            # first_link.string = course_name + ' - ' + course_title
             
-            soup_new.h2.string
+            # soup_new.h2.string
             
-            write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/introduction.html"), 
-                soup_new.prettify(formatter="html"))
+            # write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/introduction.html"), 
+            #     soup_new.prettify(formatter="html"))
             
-            soup_new = createNewSoup(os.path.join(
-                os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/register_template.html'))
+            # soup_new = createNewSoup(os.path.join(
+            #     os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/register_template.html'))
             
-            self.tag_replace(soup_new,"#Course Name#", course_name)
-            self.tag_replace(soup_new,"#Course Title#", course_title)
+            # self.tag_replace(soup_new,"#Course Name#", course_name)
+            # self.tag_replace(soup_new,"#Course Title#", course_title)
             
-            write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/register.html"), 
-                soup_new.prettify(formatter="html"))
+            # write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/register.html"), 
+            #     soup_new.prettify(formatter="html"))
             
-            soup_new = createNewSoup(os.path.join(
-                os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/profile_template.html'))
+            # soup_new = createNewSoup(os.path.join(
+            #     os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/profile_template.html'))
             
-            first_link = soup_new.find("p", class_="faculty")
-            first_link.string=faculty
+            # first_link = soup_new.find("p", class_="faculty")
+            # first_link.string=faculty
             
-            self.tag_replace(soup_new, "#Course#", course_name + ' - ' + course_title)
+            # self.tag_replace(soup_new, "#Course#", course_name + ' - ' + course_title)
             
-            write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/profile.html"), 
-                soup_new.prettify(formatter="html"))
+            # write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/profile.html"), 
+            #     soup_new.prettify(formatter="html"))
             
-            file = ""
-            match (faculty):
-                case "Faculty of Education":
-                    file = os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/Logos/FoE.png")
-                case "Faculty of Information and Communication Studies":
-                    file = os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/Logos/FICS.png")
-                case "Faculty of Management and Development Studies":
-                    file = os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/Logos/FMDS.png")
+            # file = ""
+            # match (faculty):
+            #     case "Faculty of Education":
+            #         file = os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/Logos/FoE.png")
+            #     case "Faculty of Information and Communication Studies":
+            #         file = os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/Logos/FICS.png")
+            #     case "Faculty of Management and Development Studies":
+            #         file = os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/Logos/FMDS.png")
             
-            img = Image.open(file)
-            W, H = img.size
-            font_name = ImageFont.truetype(os.path.join(
-                os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/lovtony.ttf'), 350)
-            font_title = ImageFont.truetype(os.path.join(
-                os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/Sansus Webissimo-Regular.otf'), 100)
-            draw = ImageDraw.Draw(img)
-            _, _, w_name, h_name = draw.textbbox((0, 0), course_name, font=font_name)
-            draw.text(((720+W-w_name)/2, ((H-h_name)/2)-100), course_name, font=font_name, fill='#8a1538')
-            _, _, w_title, h_title = draw.textbbox((0, 0), course_title, font=font_title)
-            draw.text(((720+W-w_title)/2, ((350+H-h_title)/2)), course_title, font=font_title, fill='#8a1538')
-            img.save(os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/img/Logo.png'))
+            # img = Image.open(file)
+            # W, H = img.size
+            # font_name = ImageFont.truetype(os.path.join(
+            #     os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/lovtony.ttf'), 350)
+            # font_title = ImageFont.truetype(os.path.join(
+            #     os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/Sansus Webissimo-Regular.otf'), 100)
+            # draw = ImageDraw.Draw(img)
+            # _, _, w_name, h_name = draw.textbbox((0, 0), course_name, font=font_name)
+            # draw.text(((720+W-w_name)/2, ((H-h_name)/2)-100), course_name, font=font_name, fill='#8a1538')
+            # _, _, w_title, h_title = draw.textbbox((0, 0), course_title, font=font_title)
+            # draw.text(((720+W-w_title)/2, ((350+H-h_title)/2)), course_title, font=font_title, fill='#8a1538')
+            # img.save(os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/img/Logo.png'))
 
         controller.frames[CourseInfoPage].refresh_sidebar(controller)
 
@@ -349,42 +352,44 @@ class CourseIntroPage(tk.Frame):
     def save_course_intro(self, controller):
         global course_intro
         
-        course_intro = self.course_intro_text.get("1.0",'end-1c')
-        words = course_intro.split('\n')
-        if len(words) == 1 and words[0]=='':
+        words = self.course_intro_text.get("1.0",'end-1c')
+        temp_array = words.split('\n')
+        if len(temp_array) == 1 and temp_array[0]=='':
             msg_box=tk.messagebox.askokcancel("No Course Info","Are you sure?")
             if msg_box != 'yes':
                 pass
             else:
-                self.save(words)
+                course_intro = temp_array
         else:
-            self.save(words)
+            course_intro = temp_array
 
     def save(self,words):
-        soup_new = createNewSoup(os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/introduction.html'))
-        for p in soup_new.find_all("p", class_=False):
-            p.decompose()
-        tag = soup_new.new_tag("p")
-        tag.string = words[0]
-        soup_new.hr.insert_after(tag)
-        for word in words[1:]:
-            last_p = soup_new.find_all("p",class_=False)[-1]
-            tag = soup_new.new_tag("p")
-            tag.string = word
-            last_p.insert_after(tag)
-        write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/introduction.html"), 
-              soup_new.prettify(formatter="html"))
+        # soup_new = createNewSoup(os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/introduction.html'))
+        # for p in soup_new.find_all("p", class_=False):
+        #     p.decompose()
+        # tag = soup_new.new_tag("p")
+        # tag.string = words[0]
+        # soup_new.hr.insert_after(tag)
+        # for word in words[1:]:
+        #     last_p = soup_new.find_all("p",class_=False)[-1]
+        #     tag = soup_new.new_tag("p")
+        #     tag.string = word
+        #     last_p.insert_after(tag)
+        # write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/introduction.html"), 
+        #       soup_new.prettify(formatter="html"))
+        pass
         
-        # controller.show_frame(StartPage)
-
     def select_file(self):
+        global course_guide_dir
         source = filedialog.askopenfilename(initialdir="/", title="Select file",
                                             filetype=(("PDF", "*.pdf"), ("All Files", "*.*")))
-        if source:
-            target = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/modules')
-            dir_parts = list(os.path.split(source))
-            target_dir = os.path.join(target, 'CourseGuide.pdf')
-            copy2(source, target_dir)
+        course_guide_dir = source
+        print(course_guide_dir)
+        # if source:
+        #     target = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/modules')
+        #     dir_parts = list(os.path.split(source))
+        #     target_dir = os.path.join(target, 'CourseGuide.pdf')
+        #     copy2(source, target_dir)
 
     def refresh_sidebar(self,controller):
         self.sidebar.refresh(controller)
@@ -398,68 +403,97 @@ class ResourcePage(tk.Frame):
         # # Add main content to a separate frame
         self.content_frame = tk.Frame(self)
         self.content_frame.pack(side="left", fill="both", expand=True)
+
+        text_label = tk.Label(self.content_frame, text="Course Introduction")
+        text_label.grid(row=1, column=1, pady=5, sticky="w")
+
+        text_frame = tk.Frame(self.content_frame)
+        text_frame.grid(row=2, column=1, pady=1,columnspan=2,sticky="nsew")
+        
+        self.resources_text = tk.Text(text_frame, width=50, height=10, wrap="none")
+        self.resources_text.grid(row=0, column=0, sticky="nsew")
+        self.resources_text.config(state=DISABLED)
+
+
+        scrollbar1 = ttk.Scrollbar(text_frame, command=self.resources_text.yview)
+        scrollbar1.grid(row=0, column=1, sticky="ns")
+        scrollbar2 = ttk.Scrollbar(text_frame, command=self.resources_text.xview, orient='horizontal')
+        scrollbar2.grid(row=1, column=0, columnspan=2, sticky="ew")
         
         button1 = ttk.Button(self.content_frame, text="Add Resources Folder",
                              command=self.select_folder, width=50)
-        button1.grid(row=1, column=1, columnspan=2, pady=10, sticky="nesw")
+        button1.grid(row=3, column=1, columnspan=2, pady=10, sticky="nesw")
         button2 = ttk.Button(self.content_frame, text="Add File",
                              command=self.select_file)    
-        button2.grid(row=2, column=1, columnspan=2, pady=10, sticky="nesw")
+        button2.grid(row=4, column=1, columnspan=2, pady=10, sticky="nesw")
 
         button3 = ttk.Button(self.content_frame, text="Save",
                             command=lambda: self.append_file(controller))
-        button3.grid(row=3, column=2,padx=10,pady=10, sticky="e")
+        button3.grid(row=5, column=2,padx=10,pady=10, sticky="e")
 
         self.content_frame.columnconfigure(0, weight=1)  # column on left
         self.content_frame.columnconfigure(3, weight=1)  # column on right
         self.content_frame.rowconfigure(0, weight=1)     # row above
-        self.content_frame.rowconfigure(4, weight=1)     # row below
+        self.content_frame.rowconfigure(6, weight=1)     # row below
         
+        self.temp_array = []
     def select_folder(self):
-        soup_new = BeautifulSoup()          
+        # soup_new = BeautifulSoup()          
         path = '{}'.format(askdirectory(title='My Title'))
-        resourceName = path.split('/')[-1]      
-        dir = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/resources/'+resourceName)
-        shutil.copytree(path, dir)
-        hasPDF = False
-        for root, dirs, files in os.walk(dir):
-            for file in files:
-                if file.endswith(".pdf"):
-                    hasPDF = True
-        li_tag = soup_new.new_tag("li")
-        a_tag = ""
-        if hasPDF == True:
-            a_tag = soup_new.new_tag("a", href="resources/"+resourceName, id="manual")
-        else:
-            a_tag = soup_new.new_tag("a", href="resources/"+resourceName)
-        a_tag.string = resourceName
-        li_tag.append(a_tag)
-        global resources
-        resources.append(li_tag)
+        # resourceName = path.split('/')[-1]      
+        # dir = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/resources/'+resourceName)
+        self.temp_array.append(path)
+        self.update_text()
+        # shutil.copytree(path, dir)
+        # hasPDF = False
+        # for root, dirs, files in os.walk(dir):
+        #     for file in files:
+        #         if file.endswith(".pdf"):
+        #             hasPDF = True
+        # li_tag = soup_new.new_tag("li")
+        # a_tag = ""
+        # if hasPDF == True:
+        #     a_tag = soup_new.new_tag("a", href="resources/"+resourceName, id="manual")
+        # else:
+        #     a_tag = soup_new.new_tag("a", href="resources/"+resourceName)
+        # a_tag.string = resourceName
+        # li_tag.append(a_tag)
+        # global resources
+        # resources.append(li_tag)
+
+    def update_text(self):
+        self.resources_text.config(state=NORMAL)
+        self.resources_text.delete("1.0","end")
+        for x in self.temp_array:
+            self.resources_text.insert(END, x+'\n')
+        self.resources_text.config(state=DISABLED)
 
     def select_file(self):
-        soup_new = BeautifulSoup()
+        # soup_new = BeautifulSoup()
         source = filedialog.askopenfilename(initialdir="/", title="Select file",
                                             filetypes=(("All Files", ""),))
         resourceName = source.split('/')[-1]      
-        dir = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/resources/'+resourceName)
-        shutil.copy(source, dir)
-        li_tag = soup_new.new_tag("li")
-        a_tag = soup_new.new_tag("a", href="resources/"+resourceName)
-        a_tag.string = resourceName
-        li_tag.append(a_tag)
-        global resources
-        resources.append(li_tag)
+        # dir = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/resources/'+resourceName)
+        self.temp_array.append(source)
+        self.update_text()
+        # shutil.copy(source, dir)
+        # li_tag = soup_new.new_tag("li")
+        # a_tag = soup_new.new_tag("a", href="resources/"+resourceName)
+        # a_tag.string = resourceName
+        # li_tag.append(a_tag)
+        # global resources
+        # resources.append(li_tag)
 
     def append_file(self,controller):
-        soup_new = createNewSoup(os.path.join(
-            os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/resources_template.html'))
+        # soup_new = createNewSoup(os.path.join(
+        #     os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/resources_template.html'))
         global resources
-        ol_tag = soup_new.find("ol")
-        for resource in resources:
-            ol_tag.append(resource)
-        write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/resources.html"), 
-              soup_new.prettify(formatter="html"))
+        # ol_tag = soup_new.find("ol")
+        # for resource in resources:
+        #     ol_tag.append(resource)
+        # write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/resources.html"), 
+        #       soup_new.prettify(formatter="html"))
+        resources = self.temp_array
         
     def refresh_sidebar(self,controller):
         self.sidebar.refresh(controller)
@@ -493,47 +527,59 @@ class TopicsPage(tk.Frame):
     def validate_entry(self, text):
         return text.isdecimal()
 
-    def copy_file(self, template, dir, to_replace, replace):
-        shutil.copy2(template, dir)
-        with open(dir,'r') as f:
-            lines = f.read()
-        lines = lines.replace(to_replace, replace)
-        with open(dir,'w') as f:
-            f.write(lines)
+    # def copy_file(self, template, dir, to_replace, replace):
+    #     shutil.copy2(template, dir)
+    #     with open(dir,'r') as f:
+    #         lines = f.read()
+    #     lines = lines.replace(to_replace, replace)
+    #     with open(dir,'w') as f:
+    #         f.write(lines)
 
     def save_numTopic(self, controller):
         global topics
-        topics = int(self.numTopics_entry.get())
-        soup_new = createNewSoup(os.path.join(
-            os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/course_template.html'))
-        to_append = []
-        for x in range(int(topics)):
-            li_tag = soup_new.new_tag("li")
-            a_tag = soup_new.new_tag("a", href="#")
-            a_tag['data-value']=x+1
-            a_tag.string = "Topic " + str(x+1) 
-            li_tag.append(a_tag)
-            to_append.append(li_tag)
-        li_tag = soup_new.new_tag("li")
-        a_tag = soup_new.new_tag("a", href="#")
-        a_tag['data-value']=topics+1
-        a_tag.string = "Final Exam"
-        li_tag.append(a_tag)
-        to_append.append(li_tag)
-        for x in to_append:
-            ul_tag = soup_new.find("ul")
-            ul_tag.append(x)
-        write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/course.html"), 
-              soup_new.prettify(formatter="html"))
-        self.copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/course.js"), 
-                       os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/js/course.js"),
-                       'case "#X#":', 'case ' +str(topics+1)+':')
-        self.copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/register.js"), 
-                       os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/js/register.js"),
-                       'for (var i = 1; i <= "#X#" ; i++) {', 'for (var i = 1; i <= '+str(topics)+' ; i++) {')
-        self.copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/course.css"), 
-                       os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/css/course.css"),
-                       '#module_content li:nth-of-type("#X#"){', '#module_content li:nth-of-type('+str(topics+2)+'){')
+        temp_topics = int(self.numTopics_entry.get())
+        if temp_topics <=0:
+            msg_box=tk.messagebox.showerror('Error', 'Error: Missing fields')
+        elif topics != 0:
+            msg_box=tk.messagebox.askquestion ('Confirmation','Are you sure want to change number of topics? Previously uploaded'+
+                                              ' PDFs and quizes will be overwritten')
+            if msg_box=='yes':
+                pass
+            else:
+                pass
+            
+        else:
+            topics = temp_topics
+        # soup_new = createNewSoup(os.path.join(
+        #     os.path.dirname(__file__),'Interactive Offline Course/CMSC 206/template/course_template.html'))
+        # to_append = []
+        # for x in range(int(topics)):
+        #     li_tag = soup_new.new_tag("li")
+        #     a_tag = soup_new.new_tag("a", href="#")
+        #     a_tag['data-value']=x+1
+        #     a_tag.string = "Topic " + str(x+1) 
+        #     li_tag.append(a_tag)
+        #     to_append.append(li_tag)
+        # li_tag = soup_new.new_tag("li")
+        # a_tag = soup_new.new_tag("a", href="#")
+        # a_tag['data-value']=topics+1
+        # a_tag.string = "Final Exam"
+        # li_tag.append(a_tag)
+        # to_append.append(li_tag)
+        # for x in to_append:
+        #     ul_tag = soup_new.find("ul")
+        #     ul_tag.append(x)
+        # write(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/course.html"), 
+        #       soup_new.prettify(formatter="html"))
+        # self.copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/course.js"), 
+        #                os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/js/course.js"),
+        #                'case "#X#":', 'case ' +str(topics+1)+':')
+        # self.copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/register.js"), 
+        #                os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/js/register.js"),
+        #                'for (var i = 1; i <= "#X#" ; i++) {', 'for (var i = 1; i <= '+str(topics)+' ; i++) {')
+        # self.copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/template/course.css"), 
+        #                os.path.join(os.path.dirname(__file__),"Interactive Offline Course/CMSC 206/css/course.css"),
+        #                '#module_content li:nth-of-type("#X#"){', '#module_content li:nth-of-type('+str(topics+2)+'){')
         global quiz_num_items, quiz_questions
         temp = []
         for x in range(topics):
@@ -542,7 +588,7 @@ class TopicsPage(tk.Frame):
         quiz_num_items["final"] = None
         quiz_questions = dict.fromkeys(temp)
         quiz_questions["final"] = None
-        self.sidebar.refresh(controller)
+        # self.sidebar.refresh(controller)
     
     def refresh_sidebar(self,controller):
         self.sidebar.refresh(controller)
