@@ -25,6 +25,8 @@ def indicate(nd,page):
     page()
 
 def course_info_page():
+    global faculty, course_no, course_title
+
     course_info_page=tk.Frame(main_frame)
     course_info_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
 
@@ -55,6 +57,13 @@ def course_info_page():
     course_title_entry=tk.Entry(course_info_page,font=('Helvtica',12),width=29)
     course_title_entry.grid(row=3,column=2,sticky=tk.E,pady=10)
 
+    if faculty != "":
+        clicked.set(faculty)
+    if course_no != "":
+        course_no_entry.insert(0,course_no)
+    if course_title != "":
+        course_title_entry.insert(0,course_title)
+
     save_btn=tk.Button(course_info_page,text="Save", font=('Helvetica',12),width=14,
                        command=lambda: save())
     save_btn.grid(row=4,column=2,sticky=tk.E,pady=10)
@@ -65,11 +74,12 @@ def course_info_page():
             messagebox.showerror('Error', 'Error: Missing fields')
         else:
             faculty = clicked.get()
-            course_no=course_title_entry.get()
+            course_no=course_no_entry.get()
             course_title=course_title_entry.get()
             enable_btn("course_info")
         
 def course_intro_page():
+    global course_intro
     course_intro_page=tk.Frame(main_frame)
     course_intro_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
 
@@ -88,19 +98,27 @@ def course_intro_page():
 
     text_frame.grid(row=2, column=1, pady=10)
 
+    if course_intro:
+        for x in range(len(course_intro)):
+            if x+1 != len(course_intro):
+                course_intro_text.insert(tk.END, course_intro[x] + "\n")
+            else:
+                course_intro_text.insert(tk.END, course_intro[x])
+
     save_btn=tk.Button(course_intro_page,text="Save", font=('Helvetica',12),width=14,
                        command=lambda: save())
     save_btn.grid(row=3,column=1,sticky=tk.E,pady=10)
 
     def save():
         global course_intro
-        temp=course_intro_text.get("1.0",'end-1c').split('\n')
-        if len(temp) == 1 and temp[0]=='':
+        temp=course_intro_text.get("1.0", 'end-1c').strip()
+        course_intro_temp = [temp1.strip() for temp1 in temp.split('\n') if temp1.strip()]
+        if not course_intro_temp:
             msg_box = messagebox.askokcancel("Empty", "No Course Information\nAre you sure?")
             if msg_box:
-                course_intro =temp
+                course_intro =course_intro_temp
         else:
-            course_intro=temp
+            course_intro=course_intro_temp
 
 def resources_page():
     global course_guide_dir
@@ -190,6 +208,7 @@ def resources_page():
             remove_top.mainloop()
 
 def num_topics_page():
+    global num_topics
     num_topics_page=tk.Frame(main_frame)
     num_topics_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
 
@@ -199,13 +218,15 @@ def num_topics_page():
     num_topics_entry=tk.Entry(num_topics_page,justify=tk.CENTER,font=('Helvtica',12),width=29)
     num_topics_entry.grid(row=1,column=2,sticky=tk.E,pady=10)
 
+    if num_topics > 0:
+        num_topics_entry.insert(0,num_topics)
+
     save_btn=tk.Button(num_topics_page,text="Save", font=('Helvetica',12),width=14,
                        command=lambda: save())
     save_btn.grid(row=2,column=2,sticky=tk.E,pady=10)
 
     def save():
         global num_topics, topics_dir, num_questions, questions
-        
         if num_topics == 0:
             if num_topics_entry.get().isdigit() == True:
                 if int(num_topics_entry.get()) < 1:
@@ -223,8 +244,8 @@ def num_topics_page():
                     enable_btn("topics")
             else:
                 messagebox.showerror("Error","Please enter only digits as no of topics!")
-        else:
-            msg_box = messagebox.askokcancel("Change of No of Topics", "Changeing the the number of topics will remove the uploaded PDFs and Questions?\nContinue?")
+        elif int(num_topics_entry.get()) != num_topics:
+            msg_box = messagebox.askokcancel("Warning", "Changing the number of topics will remove the uploaded PDFs and Questions\nContinue?")
             if msg_box:
                 topics_dir.clear()
                 num_questions.clear()
@@ -246,6 +267,9 @@ def num_topics_page():
                 else:
                     messagebox.showerror("Error","Please enter only digits as no of topics!")
         # print(num_topics, topics_dir, num_questions, questions)
+        else:
+            enable_btn("topics")
+
 
 def upload_topics_page():
     global num_topics, topics_dir
@@ -325,12 +349,211 @@ def create_quiz_page():
         button = tk.Button(scrollable_frame, text=button_text,font=('Helvetica',12),width=30,
                            command=lambda value=x+1: button_click(value))
         button.grid(row=x+1,column=1,sticky=tk.E,pady=10)
+        button_text_final = ""
+        if bool(num_questions) and num_questions[x+1] != None:
+            button_text_final = "Change Final Quiz" 
+        else:
+            button_text_final = "Create Final Quiz"
+        button_final = tk.Button(scrollable_frame, text=button_text_final, font=('Helvetica',12),width=30,
+                                 command=lambda value="final": button_click(value))
+        button_final.grid(row=num_topics+2,column=1,sticky=tk.E,pady=10)
 
-    def button_click(value):
-        num_questions_page(value)
+    def button_click(quiz_no):
+        num_questions_page(quiz_no)
 
-def num_questions_page(value):
-    pass
+def num_questions_page(quiz_no):
+    global num_questions
+    for x in main_frame.winfo_children():
+        x.destroy()
+    
+    num_questions_page=tk.Frame(main_frame)
+    num_questions_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
+
+    num_questions_label=tk.Label(num_questions_page, text="No of Questions: ",font=('Helvtica',12))
+    num_questions_label.grid(row=1,column=1,sticky=tk.W,pady=10)
+
+    num_questions_entry=tk.Entry(num_questions_page,justify=tk.CENTER,font=('Helvtica',12),width=29)
+    num_questions_entry.grid(row=1,column=2,sticky=tk.E,pady=10)
+
+    if num_questions[quiz_no] != None:
+        num_questions_entry.insert(0,str(num_questions[quiz_no]))
+
+    save_btn=tk.Button(num_questions_page,text="Save", font=('Helvetica',12),width=14,
+                       command=lambda: save(quiz_no))
+    save_btn.grid(row=2,column=2,sticky=tk.E,pady=10)
+
+    def save(quiz_no):
+        global num_questions, questions
+        num = int(num_questions_entry.get())
+        if num_questions[quiz_no] != None:
+            if num_questions[quiz_no] != num:
+                msg_box = messagebox.askokcancel("Warning", "Changing the number of questions will delete the previous quiz\nContinue?")
+                if msg_box:
+                    num_questions[quiz_no] = num
+                    questions[quiz_no] = None
+                    questionnaire_page(quiz_no,num)
+            else:
+                questionnaire_page(quiz_no, num)
+        else:
+            questionnaire_page(quiz_no, num)
+
+def questionnaire_page(quiz_no,num_questions):
+    global questions
+    for x in main_frame.winfo_children():
+        x.destroy()
+
+    questionnaire_page=tk.Frame(main_frame)
+    questionnaire_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
+    
+    canvas = tk.Canvas(questionnaire_page)
+    canvas.grid(row=1,column=1, pady=10)
+    scrollbar = tk.Scrollbar(questionnaire_page, orient="vertical", command=canvas.yview)
+    scrollbar.grid(row=1, column=2, sticky="NS")
+    scrollable_frame = tk.Frame(canvas)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+        )
+    )
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    for x in range(num_questions):
+        question_frame = tk.Frame(scrollable_frame,highlightbackground='black',highlightthickness=2)
+        question_frame.pack(pady=5)
+        #QUESTIONS ------------------------------------------------------------------------------------------------
+        question_label = tk.Label(question_frame, text=f"Question {x+1}",font=('Helvtica',12))
+        question_label.grid(row=1,column=1,sticky=tk.W,pady=10)
+
+        text_frame1=tk.Frame(question_frame)
+
+        scrollbar1=tk.Scrollbar(text_frame1)
+
+        question_text=tk.Text(text_frame1,yscrollcommand = scrollbar1.set,width=39,height=3,font=('Helvtica',12))
+        question_text.grid(row=0,column=0)
+
+        scrollbar1.grid(row=0,column=1,sticky="NS")
+        scrollbar1.config( command = question_text.yview )
+
+        text_frame1.grid(row=2, column=1, pady=10)
+        #CHOICES ------------------------------------------------------------------------------------------------
+        choices_label = tk.Label(question_frame, text="Choices",font=('Helvtica',12))
+        choices_label.grid(row=3,column=1,sticky=tk.W,pady=10)
+
+        text_frame2=tk.Frame(question_frame)
+
+        scrollbar2=tk.Scrollbar(text_frame2)
+
+        choices_text=tk.Text(text_frame2,yscrollcommand = scrollbar2.set,width=39,height=3,font=('Helvtica',12))
+        choices_text.grid(row=0,column=0)
+
+        scrollbar2.grid(row=0,column=1,sticky="NS")
+        scrollbar2.config( command = choices_text.yview )
+
+        text_frame2.grid(row=4, column=1, pady=10)
+        #ANSWERS ------------------------------------------------------------------------------------------------
+        answers_label = tk.Label(question_frame, text="Correct Answer(s)",font=('Helvtica',12))
+        answers_label.grid(row=5,column=1,sticky=tk.W,pady=10)
+
+        text_frame3=tk.Frame(question_frame)
+
+        scrollbar3=tk.Scrollbar(text_frame3)
+
+        answers_text=tk.Text(text_frame3,yscrollcommand = scrollbar3.set,width=39,height=3,font=('Helvtica',12))
+        answers_text.grid(row=0,column=0)
+
+        scrollbar3.grid(row=0,column=1,sticky="NS")
+        scrollbar3.config( command = choices_text.yview )
+
+        text_frame3.grid(row=6, column=1, pady=10)
+
+        if questions[quiz_no] != None:
+            if questions[quiz_no][x]['label']:
+               question_text.insert(tk.END, questions[quiz_no][x]['label'])
+            if questions[quiz_no][x]['options']:
+                for y in range(len(questions[quiz_no][x]['options'])):
+                    if y+1 != len(questions[quiz_no][x]['options']):
+                        choices_text.insert(tk.END, questions[quiz_no][x]['options'][y] + "\n")
+                    else:
+                        choices_text.insert(tk.END, questions[quiz_no][x]['options'][y])
+            if questions[quiz_no][x]['answer']:
+                for y in range(len(questions[quiz_no][x]['answer'])):
+                    if y+1 != len(questions[quiz_no][x]['answer']):
+                        answers_text.insert(tk.END, questions[quiz_no][x]['answer'][y] + "\n")
+                    else:
+                        answers_text.insert(tk.END, questions[quiz_no][x]['answer'][y])
+
+
+    save_btn=tk.Button(scrollable_frame,text="Save", font=('Helvetica',12),width=14,
+                       command=lambda: save(quiz_no, num_questions))
+    save_btn.pack(side=tk.RIGHT,pady=10)
+
+    def save(quiz_no, num):
+        # print(quiz_no)
+        global num_questions, questions
+        list_question = []
+        for x in range(num):
+            # print(x+1)
+            question_frame = scrollable_frame.winfo_children()[x]
+            question=question_frame.winfo_children()[1].winfo_children()[1].get("1.0", 'end-1c').strip()
+            choices_temp=question_frame.winfo_children()[3].winfo_children()[1].get("1.0", 'end-1c').strip()
+            choices = [choice.strip() for choice in choices_temp.split('\n') if choice.strip()]
+            answers_temp=question_frame.winfo_children()[5].winfo_children()[1].get("1.0", 'end-1c').strip()
+            answers = [answer.strip() for answer in answers_temp.split('\n') if answer.strip()]
+            # print(x+1,question,choices,answers)
+            if question == "" or not choices or not answers:
+                messagebox.showerror('Error','Please fill all fields.\nMissing Field on Question '+str(x+1))
+                break
+            if len(choices) == 1:
+                msg_box = messagebox.askokcancel('Warning', "Only one choice for Question " + str(x+1) + ".\nContinue?")
+                if not msg_box:
+                    break
+            # print(set(answers).issubset(set(choices)))
+            if set(answers).issubset(set(choices)) != True:
+                messagebox.showerror('Error', 'Correct Answer(s) for Question '+str(x+1)+' not in Choices.\nPlease check spelling and Caps')
+                break
+            list_question.append(
+                {
+                    'label':question,
+                    'options':choices,
+                    'answer':answers
+                }
+            )
+        num_questions[quiz_no] = num
+        questions[quiz_no] = list_question
+            
+def create_ocp_page():
+    global faculty, course_no, course_title, course_intro, course_guide_dir, resources_dir, num_topics, topics_dir, num_questions, questions
+    create_ocp_page=tk.Frame(main_frame)
+    create_ocp_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
+    
+    canvas = tk.Canvas(create_ocp_page)
+    canvas.grid(row=1,column=1, pady=10)
+    scrollbar = tk.Scrollbar(create_ocp_page, orient="vertical", command=canvas.yview)
+    scrollbar.grid(row=1, column=2, sticky="NS")
+    scrollable_frame = tk.Frame(canvas)
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+        )
+    )
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    print("Faculty: ", faculty, 
+          "\nCourse No: ", course_no, 
+          "\nCourse Title: ", course_title,
+          "\nCourse Intro: ", course_intro,
+          "\nCourse Guide Dir: ", course_guide_dir,
+          "\nResources Dir: " , resources_dir,
+          "\nNum Topics: ", num_topics,
+          "\nTopics Dir: ", topics_dir,
+          "\nNum Questions: ", num_questions,
+          "\nQuestions",questions)
 
 def enable_btn(type):
     if type=="course_info":
@@ -340,7 +563,6 @@ def enable_btn(type):
     if type=="topics":
         upload_topics_btn.config(state="normal")
         create_quiz_btn.config(state="normal")
-        create_final_btn.config(state="normal")
 
 def not_indicate():
     course_info_nd.config(bg="#8A1538")
@@ -349,7 +571,7 @@ def not_indicate():
     num_topics_nd.config(bg="#8A1538")
     upload_topics_nd.config(bg="#8A1538")
     create_quiz_nd.config(bg="#8A1538")
-    create_final_nd.config(bg="#8A1538")
+    create_ocp_nd.config(bg="#8A1538")
     
     for x in main_frame.winfo_children():
         x.destroy()
@@ -380,8 +602,8 @@ upload_topics_nd.grid(row=5, column=1,pady=10)
 create_quiz_nd = tk.Label(buttons_frame,height=2,bg="#8A1538")
 create_quiz_nd.grid(row=6, column=1,pady=10)
 
-create_final_nd = tk.Label(buttons_frame,height=2,bg="#8A1538")
-create_final_nd.grid(row=7, column=1,pady=10)
+create_ocp_nd = tk.Label(buttons_frame,height=2,bg="#8A1538")
+create_ocp_nd.grid(row=7, column=1,pady=10)
 
 course_info_btn = tk.Button(buttons_frame,
                             text="Course Information",width=15,height=1,font=('Helvetica', 10),bg="#8A1538",fg="#EEEEEE",
@@ -419,16 +641,11 @@ create_quiz_btn = tk.Button(buttons_frame,
                             command=lambda: indicate(create_quiz_nd,create_quiz_page))
 create_quiz_btn.grid(row=6, column=2, columnspan=2,pady=10)
 
-create_final_btn = tk.Button(buttons_frame,
-                            text="Create Final Quiz",width=15,height=1,font=('Helvetica', 10),bg="#8A1538",fg="#EEEEEE",
-                            borderwidth=0,anchor="w",state="disabled",
-                            command=lambda: [indicate(create_final_nd)])
-create_final_btn.grid(row=7, column=2, columnspan=2,pady=10)
-
-back_btn = tk.Button(buttons_frame,
+create_ocp_btn = tk.Button(buttons_frame,
                             text="Create OCP",width=15,height=1,font=('Helvetica', 10),bg="#8A1538",fg="#EEEEEE",
-                            borderwidth=0,anchor="w",)
-back_btn.grid(row=8, column=2, columnspan=2,pady=10)
+                            borderwidth=0,anchor="w",
+                            command=lambda: indicate(create_ocp_nd,create_ocp_page))
+create_ocp_btn.grid(row=7, column=2, columnspan=2,pady=10)
 
 main_frame = tk.Frame(root,highlightbackground='black',highlightthickness=2)
 main_frame.pack_propagate(False)
