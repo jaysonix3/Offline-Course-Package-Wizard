@@ -1,0 +1,223 @@
+('./Interactive Offline Course',
+ 'Interactive Offline Course',
+ [],
+ 'DATA',
+ [('Interactive Offline Course\\DataEd2022.pdf',
+   './Interactive Offline Course\\DataEd2022.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\NCODeL2022-ria.pptx',
+   './Interactive Offline Course\\NCODeL2022-ria.pptx',
+   'DATA'),
+  ('Interactive Offline '
+   'Course\\References\\3760-Artikeltext-18322-1-10-20200907.pdf',
+   './Interactive Offline '
+   'Course\\References\\3760-Artikeltext-18322-1-10-20200907.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\A review of increasing teaching '
+   'and learning DB.pdf',
+   './Interactive Offline Course\\References\\A review of increasing teaching '
+   'and learning DB.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\An Environment for Learning '
+   'Interactive Programming.pdf',
+   './Interactive Offline Course\\References\\An Environment for Learning '
+   'Interactive Programming.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\Bridging the digital divide with '
+   'off line e learning.pdf',
+   './Interactive Offline Course\\References\\Bridging the digital divide with '
+   'off line e learning.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\Bridging the digital divide.pdf',
+   './Interactive Offline Course\\References\\Bridging the digital divide.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\Improving the Efficiency of '
+   'Database-System Teaching.pdf',
+   './Interactive Offline Course\\References\\Improving the Efficiency of '
+   'Database-System Teaching.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\Research and Practice on the '
+   'Teaching Reform of Database Course.pdf',
+   './Interactive Offline Course\\References\\Research and Practice on the '
+   'Teaching Reform of Database Course.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\Research on Case Teaching '
+   'Method.pdf',
+   './Interactive Offline Course\\References\\Research on Case Teaching '
+   'Method.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\Selecting a learning management '
+   'system LMS in developing countries instructors evaluation.pdf',
+   './Interactive Offline Course\\References\\Selecting a learning management '
+   'system LMS in developing countries instructors evaluation.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\The Next Decade of the Database '
+   'Course.pdf',
+   './Interactive Offline Course\\References\\The Next Decade of the Database '
+   'Course.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\References\\WebToTeach.pdf',
+   './Interactive Offline Course\\References\\WebToTeach.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\course.html',
+   './Interactive Offline Course\\Offline Course\\course.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\introduction.html',
+   './Interactive Offline Course\\Offline Course\\introduction.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\login.html',
+   './Interactive Offline Course\\Offline Course\\login.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\manual.html',
+   './Interactive Offline Course\\Offline Course\\manual.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\profile.html',
+   './Interactive Offline Course\\Offline Course\\profile.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\progress.html',
+   './Interactive Offline Course\\Offline Course\\progress.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\README.md',
+   './Interactive Offline Course\\Offline Course\\README.md',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\register.html',
+   './Interactive Offline Course\\Offline Course\\register.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\resources.html',
+   './Interactive Offline Course\\Offline Course\\resources.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\template\\JS\\course.js',
+   './Interactive Offline Course\\Offline Course\\template\\JS\\course.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\template\\JS\\register.js',
+   './Interactive Offline Course\\Offline Course\\template\\JS\\register.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\course_template.html',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\course_template.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\final-exam_template.html',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\final-exam_template.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\profile_template.html',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\profile_template.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\quiz_template.html',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\quiz_template.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\register_template.html',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\register_template.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\resources_template.html',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\HTML\\resources_template.html',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\template\\CSS\\course.css',
+   './Interactive Offline Course\\Offline Course\\template\\CSS\\course.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Images\\FICS.png',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Images\\FICS.png',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Images\\FMDS.png',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Images\\FMDS.png',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Images\\FOE.png',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Images\\FOE.png',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Fonts\\lovtony.ttf',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Fonts\\lovtony.ttf',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Fonts\\Sansus Webissimo-Regular.otf',
+   './Interactive Offline Course\\Offline '
+   'Course\\template\\Banner\\Fonts\\Sansus Webissimo-Regular.otf',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\modules\\UserManual.pdf',
+   './Interactive Offline Course\\Offline Course\\modules\\UserManual.pdf',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\bootstrap.min.js',
+   './Interactive Offline Course\\Offline Course\\js\\bootstrap.min.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\course.js',
+   './Interactive Offline Course\\Offline Course\\js\\course.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\dg-quiz-maker.js',
+   './Interactive Offline Course\\Offline Course\\js\\dg-quiz-maker.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\index.js',
+   './Interactive Offline Course\\Offline Course\\js\\index.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\jquery-3.5.1.min.js',
+   './Interactive Offline Course\\Offline Course\\js\\jquery-3.5.1.min.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\login.js',
+   './Interactive Offline Course\\Offline Course\\js\\login.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\profile.js',
+   './Interactive Offline Course\\Offline Course\\js\\profile.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\progress.js',
+   './Interactive Offline Course\\Offline Course\\js\\progress.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\js\\register.js',
+   './Interactive Offline Course\\Offline Course\\js\\register.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline '
+   'Course\\js\\external\\mootools-core-1.4.5-minified.js',
+   './Interactive Offline Course\\Offline '
+   'Course\\js\\external\\mootools-core-1.4.5-minified.js',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\img\\CMSC 206-2.jpg',
+   './Interactive Offline Course\\Offline Course\\img\\CMSC 206-2.jpg',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\img\\Logo.png',
+   './Interactive Offline Course\\Offline Course\\img\\Logo.png',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\img\\upou.png',
+   './Interactive Offline Course\\Offline Course\\img\\upou.png',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\bootstrap.min.css',
+   './Interactive Offline Course\\Offline Course\\css\\bootstrap.min.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\course.css',
+   './Interactive Offline Course\\Offline Course\\css\\course.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\index.css',
+   './Interactive Offline Course\\Offline Course\\css\\index.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\login.css',
+   './Interactive Offline Course\\Offline Course\\css\\login.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\message.css',
+   './Interactive Offline Course\\Offline Course\\css\\message.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\profile.css',
+   './Interactive Offline Course\\Offline Course\\css\\profile.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\progress.css',
+   './Interactive Offline Course\\Offline Course\\css\\progress.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\quiz.css',
+   './Interactive Offline Course\\Offline Course\\css\\quiz.css',
+   'DATA'),
+  ('Interactive Offline Course\\Offline Course\\css\\register.css',
+   './Interactive Offline Course\\Offline Course\\css\\register.css',
+   'DATA')])

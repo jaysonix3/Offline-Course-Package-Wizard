@@ -752,6 +752,11 @@ class CourseManagementApp:
                     break
 
             no_quiz = False
+            for  key, value in self.topics_dir.items() :
+                if self.questions[key] == None:
+                    print(key,value)
+                    no_quiz = True
+                    break
 
             if self.faculty == "" or self.course_no == "" or self.course_title=="":
                 tk.messagebox.showerror('Error','Faculty, Course No, or Course Title is empty.')
@@ -761,7 +766,7 @@ class CourseManagementApp:
                 tk.messagebox.showerror('Error',"Number of Topics should be greater than zero")
             elif no_topics:
                 tk.messagebox.showerror('Error', "Missing topics PDF")
-            elif [self.num_questions[key] == None for key, value in self.num_questions.items()]:
+            elif no_quiz:
                 tk.messagebox.showerror('Error', 'Missing quizes')
             else:
                 #introduction.html ---------------------------------------------------------------------------------------------------------------------

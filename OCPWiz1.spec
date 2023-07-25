@@ -9,7 +9,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=["base64","copy","json","os","random","re","shutil","sys","tkinter","bs4"],
+    hiddenimports=['base64','copy','json','os','random','re','shutil','sys','tkinter','bs4'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -19,6 +19,7 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
+a.datas += Tree('./Interactive Offline Course', prefix='Interactive Offline Course')
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
