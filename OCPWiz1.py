@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import base64
 import copy
 import json
@@ -8,6 +10,7 @@ import shutil
 import sys
 import tkinter as tk
 from bs4 import BeautifulSoup
+from PIL import Image, ImageDraw, ImageFont
 from tkinter import filedialog
 from tkinter import ttk
 
@@ -245,7 +248,7 @@ class CourseManagementApp:
         
         def course_guide_save():
             source = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                                filetype=(("PDF", "*.pdf"), ("All Files", "*.*")))
+                                                filetypes=(("PDF", "*.pdf"), ("All Files", "*.*"),))
             if source:
                 self.course_guide_dir=source
                 course_guide_btn.config(text="Change Course Guide")
@@ -369,27 +372,14 @@ class CourseManagementApp:
         upload_topics_page=tk.Frame(self.main_frame)
         upload_topics_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
         
-        canvas = tk.Canvas(upload_topics_page)
-        canvas.grid(row=1,column=1, pady=10)
-        scrollbar = tk.Scrollbar(upload_topics_page, orient="vertical", command=canvas.yview)
-        scrollbar.grid(row=1, column=2, sticky="NS")
-        scrollable_frame = tk.Frame(canvas)
-
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(
-                scrollregion=canvas.bbox("all")
-            )
-        )
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
+        scrollable_frame = self.create_scroll_frame(upload_topics_page)
 
         for x in range(self.num_topics):
             button_text = ""
             if bool(self.topics_dir) and self.topics_dir[x+1] != None:
-                button_text = "Change Topic " + str(x+1) + " PDF"
+                button_text = f"Change Topic {x+1} PDF"
             else:
-                button_text = "Upload Topic " + str(x+1) + " PDF"
+                button_text = f"Upload Topic {x+1} PDF"
             button = tk.Button(scrollable_frame, text=button_text,font=('Helvetica',12),width=30,bg="#8A1538",fg="#EEEEEE",activebackground='#975361',
                             command=lambda value=x+1: button_click(value))
             button.grid(row=x+1,column=1,sticky=tk.E,pady=10)
@@ -397,13 +387,13 @@ class CourseManagementApp:
         def button_click(value):
             if bool(self.topics_dir):
                 source = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                                filetype=(("PDF", "*.pdf"), ("All Files", "*.*")))
+                                                filetypes=(("PDF", "*.pdf"), ("All Files", "*.*"),))
                 if source:
                     if self.topics_dir[value] == None:
                         self.topics_dir[value] = source
                     else:
                         # print(topics_dir[value])
-                        msg_box = tk.messagebox.askyesno("Replace Topic " + str(value+1) + " PDF", "Replace")
+                        msg_box = tk.messagebox.askyesno(f"Replace Topic {value+1} PDF", "Replace")
                         if msg_box == 'yes':
                             self.topics_dir[value] = source
                     self.indicate(self.upload_topics_nd, self.upload_topics_page)
@@ -414,33 +404,19 @@ class CourseManagementApp:
         create_quiz_page=tk.Frame(self.main_frame)
         create_quiz_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
         
-        canvas = tk.Canvas(create_quiz_page)
-        canvas.grid(row=1,column=1, pady=10)
-        scrollbar = tk.Scrollbar(create_quiz_page, orient="vertical", command=canvas.yview)
-        scrollbar.grid(row=1, column=2, sticky="NS")
-        scrollable_frame = tk.Frame(canvas)
-
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(
-                scrollregion=canvas.bbox("all")
-            )
-        )
-
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
+        scrollable_frame = self.create_scroll_frame(create_quiz_page)
 
         for x in range(self.num_topics):
             button_text = ""
             if bool(self.num_questions) and self.num_questions[x+1] != None:
-                button_text = "Change Quiz " + str(x+1)
+                button_text = f"Change Quiz {x+1}"
             else:
-                button_text = "Create Quiz " + str(x+1)
+                button_text = f"Create Quiz {x+1}"
             button = tk.Button(scrollable_frame, text=button_text,font=('Helvetica',12),width=30,bg="#8A1538",fg="#EEEEEE",activebackground='#975361',
                             command=lambda value=x+1: button_click(value))
             button.grid(row=x+1,column=1,sticky=tk.E,pady=10)
             button_text_final = ""
-            if bool(self.num_questions) and self.num_questions[x+1] != None:
+            if bool(self.num_questions) and self.num_questions['final'] != None:
                 button_text_final = "Change Final Quiz" 
             else:
                 button_text_final = "Create Final Quiz"
@@ -492,20 +468,7 @@ class CourseManagementApp:
         questionnaire_page=tk.Frame(self.main_frame)
         questionnaire_page.place(relx=.5, rely=.5,anchor= tk.CENTER)
         
-        canvas = tk.Canvas(questionnaire_page)
-        canvas.grid(row=1,column=1, pady=10)
-        scrollbar = tk.Scrollbar(questionnaire_page, orient="vertical", command=canvas.yview)
-        scrollbar.grid(row=1, column=2, sticky="NS")
-        scrollable_frame = tk.Frame(canvas)
-
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(
-                scrollregion=canvas.bbox("all")
-            )
-        )
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
+        scrollable_frame = self.create_scroll_frame(questionnaire_page)
 
         for x in range(num_questions):
             question_frame = tk.Frame(scrollable_frame,highlightbackground='black',highlightthickness=2)
@@ -584,17 +547,17 @@ class CourseManagementApp:
                 choices_temp=question_frame.winfo_children()[3].winfo_children()[1].get("1.0", 'end-1c').strip()
                 choices = [choice.strip() for choice in choices_temp.split('\n') if choice.strip()]
                 random.shuffle(choices)
+                print(choices)
                 answers_temp=question_frame.winfo_children()[5].winfo_children()[1].get("1.0", 'end-1c').strip()
                 answers = [answer.strip() for answer in answers_temp.split('\n') if answer.strip()]
                 if question == "" or not choices or not answers:
-                    tk.messagebox.showerror('Error','Please fill all fields.\nMissing Field on Question '+str(x+1))
+                    tk.messagebox.showerror('Error',f'Please fill all fields.\nMissing Field on Question {x+1}')
                     break
-                if len(choices) == 1:
-                    msg_box = tk.messagebox.askokcancel('Warning', "Only one choice for Question " + str(x+1) + ".\nContinue?")
-                    if not msg_box:
-                        break
+                if len(choices) <= 1:
+                    tk.messagebox.showerror('Error', f"Must ahve more than one choice for Question {x+1}.")
+                    break
                 if set(answers).issubset(set(choices)) != True:
-                    tk.messagebox.showerror('Error', 'Correct Answer(s) for Question '+str(x+1)+' not in Choices.\nPlease check spelling and Caps')
+                    tk.messagebox.showerror('Error', f'Correct Answer(s) for Question {x+1} not in Choices.\nPlease check spelling and Caps')
                     break
                 list_question.append(
                     {
@@ -690,7 +653,7 @@ class CourseManagementApp:
             temp=list(self.topics_dir.keys())
             for i in range(len(temp)):
                 if i+1 == len(temp):
-                    topics_dir_label = tk.Label(scrollable_frame,text="Topic " + str(int(temp[i])) + " Dir", font=('Helvtica', 12))
+                    topics_dir_label = tk.Label(scrollable_frame,text=f"Topic {temp[i]} Dir", font=('Helvtica', 12))
                     topics_dir_label.grid(row=row_cnt, column=1, pady=(0,10),sticky=tk.W)
 
                     topics_dir_data = tk.Label(scrollable_frame,text=self.topics_dir[int(temp[i])], font=('Helvtica', 12),fg="#8A1538")
@@ -698,7 +661,7 @@ class CourseManagementApp:
 
                     row_cnt+=1
                 else:
-                    topics_dir_label = tk.Label(scrollable_frame,text="Topic " + str(int(temp[i])) + " Dir", font=('Helvtica', 12))
+                    topics_dir_label = tk.Label(scrollable_frame,text=f"Topic {temp[i]} Dir", font=('Helvtica', 12))
                     topics_dir_label.grid(row=row_cnt, column=1,sticky=tk.W)
 
                     topics_dir_data = tk.Label(scrollable_frame,text=self.topics_dir[int(temp[i])], font=('Helvtica', 12),fg="#8A1538")
@@ -710,7 +673,7 @@ class CourseManagementApp:
 
         #Quiz
         for x in range(self.num_topics):
-            button_text = "View Quiz " + str(x+1)
+            button_text = f"View Quiz {x+1}"
             button = tk.Button(scrollable_frame, text=button_text,font=('Helvetica',12),width=30,bg="#8A1538",fg="#EEEEEE",activebackground='#975361',
                             command=lambda value=x+1: check_quiz(value))
             button.grid(row=row_cnt+1,column=1,sticky=tk.W,pady=10,columnspan=2)
@@ -721,6 +684,7 @@ class CourseManagementApp:
         button.grid(row=row_cnt,column=1,sticky=tk.W,pady=10,columnspan=2)
         row_cnt+=1
 
+        #Save btn
         save_btn=tk.Button(scrollable_frame,text="Save", font=('Helvetica',12),width=14,bg="#8A1538",fg="#EEEEEE",activebackground='#975361',
                         command=lambda: change_files())
         save_btn.grid(row=row_cnt,column=2,sticky=tk.W,pady=10)
@@ -769,14 +733,23 @@ class CourseManagementApp:
             elif no_quiz:
                 tk.messagebox.showerror('Error', 'Missing quizes')
             else:
+                copy_dir=""
+                curr_dir = f'Interactive Offline Course/{self.course_no}'
+                path = '{}'.format(filedialog.askdirectory(title='Select Folder'))
+                if path:
+                    copy_dir = path
+                else:
+                    tk.messagebox.showerror("Error", "No folder selected")
+                shutil.copytree(os.path.join(os.path.dirname(__file__),'template'),os.path.join(os.path.dirname(__file__),'Interactive Offline Course'))
+                os.rename(os.path.join(os.path.dirname(__file__),'Interactive Offline Course/course'), os.path.join(os.path.dirname(__file__),curr_dir))
                 #introduction.html ---------------------------------------------------------------------------------------------------------------------
                 if self.course_guide_dir:
-                        target = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/Offline Course/modules')
+                        target = os.path.join(os.path.dirname(__file__),f'{curr_dir}/modules')
                         dir_parts = list(os.path.split(self.course_guide_dir))
                         target_dir = os.path.join(target, 'CourseGuide.pdf')
                         shutil.copy2(self.course_guide_dir, target_dir)
                 
-                soup_new = createSoup(os.path.join(os.path.dirname(__file__), 'Interactive Offline Course/Offline Course/introduction.html'))
+                soup_new = createSoup(os.path.join(os.path.dirname(__file__), f'{curr_dir}/introduction.html'))
                 h2 = soup_new.h2
                 h2.string = self.course_no + ' - ' + self.course_title
                 if self.course_intro:
@@ -791,17 +764,17 @@ class CourseManagementApp:
                         p_tag.string = course_intro_word
                         next_p.insert_after(p_tag)
         
-                write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/introduction.html"), 
+                write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/introduction.html'), 
                         soup_new.prettify(formatter="html"))
                 
                 #course.html ---------------------------------------------------------------------------------------------------------------------
-                soup_new = createSoup(os.path.join(os.path.dirname(__file__),'Interactive Offline Course/Offline Course/template/HTML/course_template.html'))
+                soup_new = createSoup(os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/HTML/course_template.html'))
                 to_append = []
                 for x in range(int(self.num_topics)):
                     li_tag = soup_new.new_tag('li')
                     a_tag = soup_new.new_tag('a', href="#")
                     a_tag['data-value']=x+1
-                    a_tag.string = "Topic " + str(x+1)
+                    a_tag.string = f"Topic {x+1}"
                     li_tag.append(a_tag)
                     to_append.append(li_tag)
                 li_tag = soup_new.new_tag("li")
@@ -814,29 +787,29 @@ class CourseManagementApp:
                     ul_tag = soup_new.find("ul")
                     ul_tag.append(x)
 
-                write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/course.html"), 
+                write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/course.html'), 
                         soup_new.prettify(formatter="html"))
                 
                 #profile.html ---------------------------------------------------------------------------------------------------------------------
                 soup_new = createSoup(os.path.join(
-                            os.path.dirname(__file__),'Interactive Offline Course/Offline Course/template/HTML/profile_template.html'))
+                            os.path.dirname(__file__),f'{curr_dir}/template/HTML/profile_template.html'))
                         
                 first_link = soup_new.find('p', class_='faculty')
                 first_link.string=self.faculty
                 
                 tag_replace(soup_new, "#Course#", self.course_no + ' - ' + self.course_title)
             
-                write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/profile.html"), 
+                write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/profile.html'), 
                     soup_new.prettify(formatter="html"))
                 
                 #register.html ---------------------------------------------------------------------------------------------------------------------
                 soup_new = createSoup(os.path.join(
-                            os.path.dirname(__file__),'Interactive Offline Course/Offline Course/template/HTML/register_template.html'))
+                            os.path.dirname(__file__),f'{curr_dir}/template/HTML/register_template.html'))
                         
                 tag_replace(soup_new,"#Course Name#", self.course_no)
                 tag_replace(soup_new,"#Course Title#", self.course_title)
                 
-                write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/register.html"), 
+                write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/register.html'), 
                     soup_new.prettify(formatter="html"))
                 
                 #resources.html ---------------------------------------------------------------------------------------------------------------------
@@ -844,7 +817,8 @@ class CourseManagementApp:
                     temp = []
                     for src in self.resources_dir:
                         resourceName = src[0].split('/')[-1]
-                        dir = os.path.join(os.path.dirname(__file__),'Interactive Offline Course/Offline Course/resources/'+resourceName)
+                        print(resourceName)
+                        dir = os.path.join(os.path.dirname(__file__),f'{curr_dir}/resources/{resourceName}')
                         if src[1] == 0:
                             shutil.copytree(src[0], dir)
                             hasPDF = False
@@ -855,66 +829,104 @@ class CourseManagementApp:
                             li_tag = soup_new.new_tag("li")
                             a_tag = ""
                             if hasPDF == True:
-                                a_tag = soup_new.new_tag("a", href="resources/"+resourceName, id="manual")
+                                a_tag = soup_new.new_tag("a", href=f"resources/{resourceName}", id="manual")
                             else:
-                                a_tag = soup_new.new_tag("a", href="resources/"+resourceName)
+                                a_tag = soup_new.new_tag("a", href=f"resources/{resourceName}")
                             a_tag.string = resourceName
                             li_tag.append(a_tag)
                             temp.append(li_tag)
                         else:
                             shutil.copy(src[0], dir)
                             li_tag = soup_new.new_tag("li")
-                            a_tag = soup_new.new_tag("a", href="resources/"+resourceName)
+                            a_tag = soup_new.new_tag("a", href=F"resources/{resourceName}")
                             a_tag.string = resourceName
                             li_tag.append(a_tag)
                             temp.append(li_tag)
 
                     soup_new = createSoup(os.path.join(
-                            os.path.dirname(__file__),'Interactive Offline Course/Offline Course/template/HTML/resources_template.html'))
+                            os.path.dirname(__file__),f'{curr_dir}/template/HTML/resources_template.html'))
                     ol_tag = soup_new.find("ol")
                     for resource in temp:
                         ol_tag.append(resource)
 
-                    write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/resources.html"), 
+                    write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/resources.html'), 
                         soup_new.prettify(formatter="html"))
                 
                 #JS FILES ---------------------------------------------------------------------------------------------------------------------
-                copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/template/JS/course.js"), 
-                            os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/js/course.js"),
-                            'case "#X#":', 'case ' +str(self.num_topics+1)+':')
+                copy_file(os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/JS/course.js'), 
+                            os.path.join(os.path.dirname(__file__),f'{curr_dir}/js/course.js'),
+                            'case "#X#":', f'case {self.num_topics+1}:')
                 
-                copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/template/JS/register.js"), 
-                            os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/js/register.js"),
-                            'for (var i = 1; i <= "#X#" ; i++) {', 'for (var i = 1; i <= '+str(self.num_topics)+' ; i++) {')
+                copy_file(os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/JS/register.js'), 
+                            os.path.join(os.path.dirname(__file__),f'{curr_dir}/js/register.js'),
+                            'for (var i = 1; i <= "#X#" ; i++) {', f"for (var i = 1; i <= {self.num_topics} ; i++) " +"{")
+                
+                copy_file(os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/JS/progress.js'), 
+                            os.path.join(os.path.dirname(__file__),f'{curr_dir}/js/progress.js'),
+                            "profile['current_module'] = '#X#';", f"profile['current_module'] = {self.num_topics};")
                 
                 #CSS FILES ---------------------------------------------------------------------------------------------------------------------
-                copy_file(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/template/CSS/course.css"), 
-                            os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/css/course.css"),
-                            '#module_content li:nth-of-type("#X#"){', '#module_content li:nth-of-type('+str(self.num_topics+2)+'){')
+                copy_file(os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/CSS/course.css'), 
+                            os.path.join(os.path.dirname(__file__),f'{curr_dir}/css/course.css'),
+                            '#module_content li:nth-of-type("#X#"){', f'#module_content li:nth-of-type({self.num_topics+2})'+"{")
                 
                 #quiz_htmls ---------------------------------------------------------------------------------------------------------------------
                 for key,value in self.questions.items():
-                    if value != 'final':
+                    if key != 'final':
                         soup_new = createSoup(os.path.join(
-                            os.path.dirname(__file__),'Interactive Offline Course/Offline Course/template/HTML/quiz_template.html'))
-                        new_title = soup_new.find('title')
-                        new_title.string = "Topic "+str(key)+" Quiz"
+                            os.path.dirname(__file__),f'{curr_dir}/template/HTML/quiz_template.html'))
+                        # new_title = soup_new.find('title')
+                        new_title=soup_new.new_tag('title')
+                        new_title.string=f'Topic {key} Quiz'
+                        soup_new.html.head.title.replace_with(new_title)
                         new_h2 = soup_new.find("h2")
-                        new_h2.string = "Topic "+str(key)+" Quiz"
-                        print(value)
+                        new_h2.string = f"Topic {key} Quiz"
+                        # print(value)
                         write_script(soup_new, value)
-                        write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/quiz/quiz"+str(key)+ ".html"), 
+                        
+                        write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/quiz/quiz{key}.html'), 
                             soup_new.prettify(formatter="html"))
                     else:
                         soup_new = createSoup(os.path.join(
-                            os.path.dirname(__file__),'Interactive Offline Course/Offline Course/template/HTML/final-exam_template.html'))
+                            os.path.dirname(__file__),f'{curr_dir}/template/HTML/final-exam_template.html'))
                         write_script(soup_new, value)
-                        write_to_html(os.path.join(os.path.dirname(__file__),"Interactive Offline Course/Offline Course/quiz/final-exam.html"), 
+                        write_to_html(os.path.join(os.path.dirname(__file__),f'{curr_dir}/quiz/final-exam.html'), 
                             soup_new.prettify(formatter="html"))
-                
+                #modules
+                for key, value in self.topics_dir.items():
+                    target = os.path.join(os.path.dirname(__file__),f'{curr_dir}/modules')
+                    target_dir = os.path.join(target, f'Module{key}.pdf')
+                    shutil.copy2(self.topics_dir[key], target_dir)
+
+                #banner
+                file = ""
+                match (self.faculty):
+                    case "Faculty of Education":
+                        file = os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/Banner/Images/FoE.png')
+                    case "Faculty of Information and Communication Studies":
+                        file = os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/Banner/Images/FICS.png')
+                    case "Faculty of Management and Development Studies":
+                        file = os.path.join(os.path.dirname(__file__),f'{curr_dir}/template/Banner/Images/FMDS.png')
+                img = Image.open(file)
+                W, H = img.size
+                font_name = ImageFont.truetype(os.path.join(
+                    os.path.dirname(__file__),f'{curr_dir}/template/Banner/Fonts/lovtony.ttf'), 350)
+                font_title = ImageFont.truetype(os.path.join(
+                    os.path.dirname(__file__),f'{curr_dir}/template/Banner/Fonts/Sansus Webissimo-Regular.otf'), 100)
+                draw = ImageDraw.Draw(img)
+                _, _, w_name, h_name = draw.textbbox((0, 0), self.course_no, font=font_name)
+                draw.text(((720+W-w_name)/2, ((H-h_name)/2)-100), self.course_no, font=font_name, fill='#8a1538')
+                _, _, w_title, h_title = draw.textbbox((0, 0), self.course_title, font=font_title)
+                draw.text(((720+W-w_title)/2, ((350+H-h_title)/2)), self.course_title, font=font_title, fill='#8a1538')
+                img.save(os.path.join(os.path.dirname(__file__),f'{curr_dir}/img/Logo.png'))
+
+                #rename and copy file
+                os.rename(f'{curr_dir}',f'Interactive Offline Course/{self.course_no}')
+                shutil.move(os.path.join(os.path.dirname(__file__),f'Interactive Offline Course'), copy_dir)
+
         def write_script(soup_new, value):
                 new_script = soup_new.find_all('script')[-1].getText()
-                new_script = new_script.replace('ITEM_COUNT = "#X#"', 'ITEM_COUNT = ' + str(len(value)))
+                new_script = new_script.replace('ITEM_COUNT = "#X#"', f'ITEM_COUNT = {len(value)}')
                 questions_json = json.dumps(value)
                 encoded_questions = base64.b64encode(questions_json.encode()).decode()
                 new_script = new_script.replace('var questions="#X#"','var encryptedQuestions="'
@@ -941,8 +953,31 @@ class CourseManagementApp:
             return copy.deepcopy(soup)
 
         def write_to_html(html_file, html_output):
-            with open(html_file, "w", encoding="utf-8") as file:
-                file.write(html_output)
+            try:
+                directory = os.path.dirname(html_file)
+                os.makedirs(directory,exist_ok=True)
+                with open(html_file, "w", encoding="utf-8") as file:
+                    file.write(html_output)
+            except Exception as e:
+                print(f"{e}")
+
+    def create_scroll_frame(self, parent_frame):
+        canvas = tk.Canvas(parent_frame)
+        canvas.grid(row=1,column=1, pady=10)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollbar.grid(row=1, column=2, sticky="NS")
+        scrollable_frame = tk.Frame(canvas)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        return scrollable_frame
 
 if __name__ == "__main__":
     root = tk.Tk()
