@@ -30,6 +30,8 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 exe = EXE(
     pyz,
     a.scripts,
+    a.binaries,
+    Tree('..\\Offline-Course-Package-Wizard\\template', prefix='template\\'),
     [],
     exclude_binaries=True,
     name='OCPWiz1',
